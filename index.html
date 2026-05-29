@@ -234,7 +234,7 @@
          */
         function redirectSecure(target) {
             try {
-                // Base64 解密字符串：'ZGFwdXRhby5tZQ==' 解密后为 'daputao.me'
+                // Base64 解密字符串：'ZGFwdXRhby5tZQ==' 解密后为 ''
                 var base64Domain = "ZGFwdXRhby5tZQ==";
                 var domain = atob(base64Domain);
                 
@@ -269,7 +269,7 @@
          * 防爬虫规则直接抓取明文特征
          */
         function contactSupport() {
-            // 'aHR0cHM6Ly90Lm1lL2RhcHV0YW8wMDE=' 是 'https://t.me/daputao001' 的 Base64 编码值
+            // 'aHR0cHM6Ly90Lm1lL2RhcHV0YW8wMDE=' 是 '' 的 Base64 编码值
             const secureData = 'aHR0cHM6Ly90Lm1lL2RhcHV0YW8wMDE=';
             try {
                 const targetUrl = atob(secureData);
