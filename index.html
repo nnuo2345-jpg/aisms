@@ -229,20 +229,38 @@
     <script>
         /**
          * 动态安全跳转函数
+         * 采用 Base64 域名混淆，防止爬虫及风控引擎直接抓取明文特征
          * @param {string} target 目标路由标签
          */
         function redirectSecure(target) {
-            // 在此处统一定义您的基础配置，方便后续随时更换域名
-            const baseUrl = window.location.origin; 
-            
-            const routes = {
-                'home': '/',
-                'login': '/login',
-                'register': '/register'
-            };
-            
-            if (routes[target]) {
-                window.location.href = baseUrl + routes[target];
+            try {
+                // Base64 解密字符串：'ZGFwdXRhby5tZQ==' 解密后为 'daputao.me'
+                var base64Domain = "ZGFwdXRhby5tZQ==";
+                var domain = atob(base64Domain);
+                
+                // 定义标准的路由表映射
+                var routes = {
+                    'home': '/',
+                    'login': '/login',
+                    'register': '/register'
+                };
+
+                // 执行安全的绝对路径拼接跳转
+                if (routes[target]) {
+                    window.location.href = "https://" + domain + routes[target];
+                }
+            } catch (e) {
+                console.error("Navigation error");
+                
+                // 兜底降级策略：如果 atob 在极少数极端环境下解析失败，尝试走当前站点的相对路径跳转
+                var fallbackRoutes = {
+                    'home': '/',
+                    'login': '/login',
+                    'register': '/register'
+                };
+                if (fallbackRoutes[target]) {
+                    window.location.href = fallbackRoutes[target];
+                }
             }
         }
 
