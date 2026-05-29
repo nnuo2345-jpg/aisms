@@ -11,7 +11,6 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="AI 账号激活专家 - AI SMS Register">
     <meta property="og:description" content="专为 AI 开发者设计的全球接码中继站，助您快速激活 Claude 3.5 与 GPT-4o 账号。">
-    <meta property="og:url" content="https://daputao.me">
     
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,10 +84,13 @@
         .hero-title span { color: var(--accent-color); }
         .hero-subtitle { color: #a0a0a8; max-width: 800px; margin: 0 auto 2.5rem; font-size: 1.2rem; }
 
-        /* 通用按钮 */
+        /* 通用按钮与指针优化 */
         .btn-modern { padding: 14px 35px; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
         .btn-primary-modern { background: var(--primary-color); color: white; border: none; box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3); }
         .btn-primary-modern:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(124, 77, 255, 0.5); color: white; }
+        
+        /* 体验优化：非a标签绑定事件时保持小手指针 */
+        .custom-pointer { cursor: pointer !important; }
 
         /* 特性卡片 */
         .feature-card {
@@ -100,7 +102,7 @@
         .feature-card:hover { border-color: var(--primary-color); transform: translateY(-10px); }
         .icon-box { width: 50px; height: 50px; color: var(--primary-color); font-size: 1.8rem; margin-bottom: 1rem; }
 
-        /* FAQ 模块 (针对关键词抓取) */
+        /* FAQ 模块 */
         .faq-section { padding: 5rem 0; }
         .accordion-item { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); color: white; margin-bottom: 10px; border-radius: 15px !important; overflow: hidden; }
         .accordion-button { background: transparent; color: white !important; font-weight: 600; }
@@ -116,10 +118,10 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">AI SMS REGISTER</a>
+            <span class="navbar-brand custom-pointer" onclick="redirectSecure('home')">AI SMS REGISTER</span>
             <div class="d-flex align-items-center">
-                <a href="https://daputao.me/login" class="nav-link me-3 d-none d-sm-block">登录</a>
-                <a href="https://daputao.me/register" class="btn btn-modern btn-primary-modern btn-sm text-white">立即注册</a>
+                <span onclick="redirectSecure('login')" class="nav-link me-3 d-none d-sm-block text-white-50 custom-pointer">登录</span>
+                <button onclick="redirectSecure('register')" class="btn btn-modern btn-primary-modern btn-sm text-white custom-pointer">立即注册</button>
             </div>
         </div>
     </nav>
@@ -128,7 +130,7 @@
         <h1 class="hero-title">解决 <span>ChatGPT & Claude</span><br>号码验证难题</h1>
         <p class="hero-subtitle">全网独家优质运营商实卡号段，针对 AI 平台风控算法实时优化，拒绝“该号码无法验证”。支持 API 自动化调度与限价逻辑。</p>
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-            <a href="https://daputao.me/register" class="btn btn-modern btn-primary-modern text-white">开始注册激活</a>
+            <button onclick="redirectSecure('register')" class="btn btn-modern btn-primary-modern text-white custom-pointer">开始注册激活</button>
             <a href="#faq" class="btn btn-modern btn-outline-light">查看接码教程</a>
         </div>
         <div class="mt-5 opacity-50 d-flex justify-content-center gap-4 fs-2">
@@ -213,13 +215,51 @@
 
     <footer class="container text-center">
         <div class="mb-3">
-            <a href="https://daputao.me/register" class="text-light text-decoration-none mx-3">新用户注册</a>
-            <a href="https://daputao.me/login" class="text-light text-decoration-none mx-3">后台登录</a>
+            <span onclick="redirectSecure('register')" class="text-light text-decoration-none mx-3 custom-pointer">新用户注册</span>
+            <span onclick="redirectSecure('login')" class="text-light text-decoration-none mx-3 custom-pointer">后台登录</span>
         </div>
         <p>&copy; 2026 AI SMS Register. 全球顶级 AI 账号激活专家。支持聚合 API 限价模式。</p>
-        <p class="small">如果您是开发者，请联系客服获取最新 API 文档，支持 100+ 国家和地区。</p>
+        <p class="small text-secondary">
+            如果您是开发者，请 <span onclick="contactSupport()" class="text-accent custom-pointer" style="color: var(--accent-color); text-decoration: underline;">点击联系客服</span> 获取最新 API 文档，支持 100+ 国家和地区。
+        </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        /**
+         * 动态安全跳转函数
+         * @param {string} target 目标路由标签
+         */
+        function redirectSecure(target) {
+            // 在此处统一定义您的基础配置，方便后续随时更换域名
+            const baseUrl = window.location.origin; 
+            
+            const routes = {
+                'home': '/',
+                'login': '/login',
+                'register': '/register'
+            };
+            
+            if (routes[target]) {
+                window.location.href = baseUrl + routes[target];
+            }
+        }
+
+        /**
+         * Telegram 敏感联系方式混淆解析函数
+         * 防爬虫规则直接抓取明文特征
+         */
+        function contactSupport() {
+            // 'aHR0cHM6Ly90Lm1lL2RhcHV0YW8wMDE=' 是 'https://t.me/daputao001' 的 Base64 编码值
+            const secureData = 'aHR0cHM6Ly90Lm1lL2RhcHV0YW8wMDE=';
+            try {
+                const targetUrl = atob(secureData);
+                window.open(targetUrl, '_blank');
+            } catch (e) {
+                console.error("Failed to parse communication protocol.");
+            }
+        }
+    </script>
 </body>
 </html>
